@@ -4,10 +4,10 @@ Module for filtering log data
 """
 
 import re
-from typing import List
+import os
 import logging
 import mysql.connector
-import os
+from typing import List
 
 
 class RedactingFormatter(logging.Formatter):
@@ -39,7 +39,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     return message
 
 
-def get_logger() -> mysql.connector.connection.MYSQLConnection:
+def get_logger() -> logging.Logger:
     """Returns a logging.Logger object."""
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
@@ -54,7 +54,7 @@ def get_logger() -> mysql.connector.connection.MYSQLConnection:
     return logger
 
 
-def get_db() -> MySQLConnection:
+def get_db() -> mysql.connector.connection.MYSQLConnection:
     """Returns a connector to the MySQL database."""
     db_connect = mysql.connector.connect(
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
