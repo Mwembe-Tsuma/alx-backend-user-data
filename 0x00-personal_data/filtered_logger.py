@@ -8,7 +8,6 @@ import re
 from typing import List
 import os
 import mysql.connector
-import mysql.connector
 
 
 class RedactingFormatter(logging.Formatter):
