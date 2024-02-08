@@ -29,6 +29,17 @@ class RedactingFormatter(logging.Formatter):
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
 
+def get_db() -> mysql.connector.connection.MYSQLConnection:
+    """Returns a connector to the MySQL database."""
+    db_connect = mysql.connector.connect(
+        user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
+        password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
+        host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
+        database=os.getenv('PERSONAL_DATA_DB_NAME')
+    )
+    return db_connect
+
+
 def filter_datum(fields: List[str], redaction: str, message: str,
                  separator: str) -> str:
     """Returns the log message obfuscated."""
@@ -51,14 +62,3 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
 
     return logger
-
-
-def get_db() -> mysql.connector.connection.MYSQLConnection:
-    """Returns a connector to the MySQL database."""
-    db_connect = mysql.connector.connect(
-        user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
-        password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
-        host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
-        database=os.getenv('PERSONAL_DATA_DB_NAME')
-    )
-    return db_connect
