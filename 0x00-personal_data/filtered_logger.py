@@ -8,7 +8,6 @@ import os
 import logging
 import mysql.connector
 from typing import List
-from mysql.connector.connection import MySQLConnection
 
 
 class RedactingFormatter(logging.Formatter):
@@ -40,7 +39,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     return message
 
 
-def get_logger() -> logging.Logger:
+def get_logger() -> mysql.connector.connection.MYSQLConnection:
     """Returns a logging.Logger object."""
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
