@@ -8,7 +8,7 @@ import re
 from typing import List
 import os
 import mysql.connector
-from mysql.connector.connection import MySQLConnection
+import mysql.connector
 
 
 class RedactingFormatter(logging.Formatter):
@@ -55,8 +55,8 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-def get_db() -> MySQLConnection:
-    """Connection to MySQL environment."""
+def get_db() -> mysql.connector.connection.MYSQLConnection:
+    """Connection to MySQL."""
     db_connect = mysql.connector.connect(
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
