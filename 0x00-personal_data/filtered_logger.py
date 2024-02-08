@@ -64,3 +64,29 @@ def get_db() -> MySQLConnection:
         database=os.getenv('PERSONAL_DATA_DB_NAME')
     )
     return db_connect
+
+
+def main() -> None:
+    """
+    Retrieve all rows from the users table 
+    and display in a filtered format
+    """
+    connection = get_db()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM users;")
+
+    headers = [field[0] for field in cursor.description]
+    logger = get_logger()
+
+    for row in cursor:
+        filtered_row = ''
+        for f, p in zip(row, headers):
+            filtered_row += f'{p}={(f)}; '
+        logger.info(filtered_row)
+    
+    cursor.close()
+    connection.close()
+
+
+if __name__ == '__main__':
+    main()
