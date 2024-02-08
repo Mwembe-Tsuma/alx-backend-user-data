@@ -68,7 +68,7 @@ def get_db() -> MySQLConnection:
 
 def main() -> None:
     """
-    Retrieve all rows from the users table 
+    Retrieve all rows from the users table
     and display in a filtered format
     """
     connection = get_db()
@@ -83,7 +83,7 @@ def main() -> None:
         for f, p in zip(row, headers):
             filtered_row += f'{p}={(f)}; '
         logger.info(filtered_row)
-    
+
     cursor.close()
     connection.close()
 
