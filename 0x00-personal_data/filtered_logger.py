@@ -4,11 +4,10 @@ Module for filtering log data
 """
 
 import re
-import os
+from typing import List
 import logging
 import mysql.connector
-from typing import List
-from mysql.connector.connection import MySQLConnection
+import os
 
 
 class RedactingFormatter(logging.Formatter):
