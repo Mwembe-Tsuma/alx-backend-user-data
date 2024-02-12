@@ -3,6 +3,7 @@
 """
 from flask import jsonify, abort
 from api.v1.views import app_views
+from flask.wrappers import Response
 
 
 @app_views.route('/status', methods=['GET'], strict_slashes=False)
@@ -30,3 +31,9 @@ def stats() -> str:
 def unauthorized():
     """ Endpoint to raise a 401 error using abort """
     abort(401)
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def forbidden() -> Response:
+    """ Endpoint to raise a 403 error using abort """
+    abort(403)
