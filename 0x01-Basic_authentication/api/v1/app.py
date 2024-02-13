@@ -43,9 +43,6 @@ def before_request():
             abort(403)
 
 
-app.before_request(before_request)
-
-
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
