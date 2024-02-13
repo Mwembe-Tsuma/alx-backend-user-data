@@ -24,8 +24,9 @@ class Auth:
         """
         Method to get the authorization header
         """
-        if request is None or 'Authorization' not in request.headers:
-            return None
+        if request is not None:
+            return request.headers.get('Authorization', None)
+        return None
 
         return request.headers['Authorization']
 
