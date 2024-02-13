@@ -16,11 +16,13 @@ app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
 auth = None
-auth_type = getenv('AUTH_TYPE', 'auth')
-if auth_type == 'auth':
-    auth = Auth()
-if auth_type == 'basic_auth':
-    auth = BasicAuth()
+
+auth_type = getenv("AUTH_TYPE", None)
+
+if auth_type:
+    if auth_type == 'basic_auth':
+        from api.v1.auth.basic_auth import BasicAuth
+        auth = BasicAuth()
 
 
 @app.errorhandler(401)
@@ -55,11 +57,9 @@ def authenticate_user():
             '/api/v1/forbidden/',
         ]
         if auth.require_auth(request.path, excluded_paths):
-            auth_header = auth.authorization_header(request)
-            user = auth.current_user(request)
-            if auth_header is None:
+            if auth.authorization_header(request) is None:
                 abort(401)
-            if user is None:
+            if auth.current_user(request) is None:
                 abort(403)
 
 
