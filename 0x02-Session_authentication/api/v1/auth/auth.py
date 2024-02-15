@@ -2,9 +2,10 @@
 """
 Authentication module for the API
 """
-from flask import request
+from flask import request, jsonify
 from typing import List, TypeVar
 import fnmatch
+import os
 
 
 class Auth:
@@ -34,3 +35,15 @@ class Auth:
         Method to get the current user
         """
         return None
+
+    def session_cookie(self, request=None):
+        """
+        Get the Session ID from a cookie in the request."""
+        if request is None:
+            return None
+
+        session_name = os.getenv('SESSION_NAME', '_my_session_id')
+
+        session_id = request.cookies.get(session_name)
+
+        return session_id
