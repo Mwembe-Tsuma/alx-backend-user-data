@@ -6,6 +6,7 @@ Route module for the API
 from api.v1.auth.auth import Auth
 import uuid
 from typing import TypeVar
+from models.user import User
 
 
 class SessionAuth(Auth):
@@ -34,7 +35,7 @@ class SessionAuth(Auth):
 
         return user_id
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None):
         """Return user instance based on cookie values."""
         if request is None:
             return None
