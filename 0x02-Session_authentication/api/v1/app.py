@@ -7,29 +7,20 @@ from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
-
+from api.v1.auth.auth import Auth
+from api.v1.auth.basic_auth import BasicAuth
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
 auth = None
-AUTH_TYPE = os.getenv("AUTH_TYPE")
-if AUTH_TYPE == "auth":
-    from api.v1.auth.auth import Auth
+
+auth_type = getenv('AUTH_TYPE', 'auth')
+if auth_type == 'auth':
     auth = Auth()
-elif AUTH_TYPE == "basic_auth":
-    from api.v1.auth.basic_auth import BasicAuth
+if auth_type == 'basic_auth':
     auth = BasicAuth()
-elif AUTH_TYPE == "session_auth":
-    from api.v1.auth.session_auth import SessionAuth
-    auth = SessionAuth()
-elif AUTH_TYPE == "session_exp_auth":
-    from api.v1.auth.session_exp_auth import SessionExpAuth
-    auth = SessionExpAuth()
-elif AUTH_TYPE == "session_db_auth":
-    from api.v1.auth.session_db_auth import SessionDBAuth
-    auth = SessionDBAuth()
 
 
 @app.errorhandler(401)
@@ -57,22 +48,17 @@ def not_found(error) -> str:
 def authenticate_user():
     """Method to handle before_request
     """
-    if auth is None:
-        pass
-    else:
-        setattr(request, "current_user", auth.current_user(request))
-        excluded = [
+    if auth:
+        excluded_paths = [
             '/api/v1/status/',
             '/api/v1/unauthorized/',
             '/api/v1/forbidden/',
-            '/api/v1/auth_session/login/'
         ]
-        if auth.require_auth(request.path, excluded):
-            cookie = auth.session_cookie(request)
-            if auth.authorization_header(request) is None and cookie is None:
-                abort(401, description="Unauthorized")
+        if auth.require_auth(request.path, excluded_paths):
+            if auth.authorization_header(request) is None:
+                abort(401)
             if auth.current_user(request) is None:
-                abort(403, description="Forbidden")
+                abort(403)
 
 
 if __name__ == "__main__":
