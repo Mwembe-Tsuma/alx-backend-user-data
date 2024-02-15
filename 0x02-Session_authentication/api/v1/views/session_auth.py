@@ -3,7 +3,6 @@
 """
 from flask import Flask, jsonify, request
 from models.user import User
-from api.v1.app import auth
 from api.v1.views import app_views
 import os
 
