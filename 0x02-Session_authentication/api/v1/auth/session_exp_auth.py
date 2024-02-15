@@ -3,7 +3,7 @@
 Expiration module
 """
 import os
-from datetime import (datetime, timedelta)
+from datetime import datetime, timedelta
 from .session_auth import SessionAuth
 
 
