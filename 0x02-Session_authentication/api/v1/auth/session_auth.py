@@ -4,9 +4,10 @@ Route module for the API
 """
 
 from api.v1.auth.auth import Auth
-import uuid
 from typing import TypeVar
 from models.user import User
+import base64
+from uuid import uuid4
 
 
 class SessionAuth(Auth):
