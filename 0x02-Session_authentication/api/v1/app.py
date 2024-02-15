@@ -48,17 +48,21 @@ def not_found(error) -> str:
 def authenticate_user():
     """Method to handle before_request
     """
-    if auth:
-        excluded_paths = [
+    if auth is None:
+        pass
+    else:
+        setattr(request, "current_user", auth.current_user(request))
+        excluded = [
             '/api/v1/status/',
             '/api/v1/unauthorized/',
             '/api/v1/forbidden/',
         ]
-        if auth.require_auth(request.path, excluded_paths):
-            if auth.authorization_header(request) is None:
-                abort(401)
+        if auth.require_auth(request.path, excluded):
+            cookies = auth.session_cookie(request)
+            if auth.authorization_header(request) is None and cookies is None:
+                abort(401, description="Unauthorized")
             if auth.current_user(request) is None:
-                abort(403)
+                abort(403, description="Forbidden")
 
 
 if __name__ == "__main__":
