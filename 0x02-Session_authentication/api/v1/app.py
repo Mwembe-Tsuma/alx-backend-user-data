@@ -67,6 +67,7 @@ def authenticate_user():
             '/api/v1/status/',
             '/api/v1/unauthorized/',
             '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/'
         ]
         if auth.require_auth(request.path, excluded):
             cookies = auth.session_cookie(request)
