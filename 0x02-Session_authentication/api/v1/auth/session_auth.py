@@ -5,6 +5,7 @@ Route module for the API
 
 from api.v1.auth.auth import Auth
 import uuid
+from typing import TypeVar
 
 
 class SessionAuth(Auth):
