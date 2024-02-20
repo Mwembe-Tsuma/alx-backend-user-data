@@ -30,8 +30,7 @@ def _generate_uuid() -> str:
     """
     Generate a new UUID and return its string representation.
     """
-    new_uuid = uuid.uuid4()
-    return str(new_uuid)
+    return str(uuid4())
 
 
 class Auth:
