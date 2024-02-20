@@ -37,6 +37,7 @@ def register_user():
         return jsonify({"message": str(e)}), 400
 
 
+@app.route("/sessions", methods=["POST"], strict_slashes=False)
 def login():
     """
     POST route to authenticate and create a new session for the user.
