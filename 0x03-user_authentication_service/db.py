@@ -67,7 +67,7 @@ class DB:
         except InvalidRequestError as e:
             raise e
 
-    ef update_user(self, user_id: int, **kwargs) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """
         Update the user's attributes based on the provided keyword arguments.
         """
