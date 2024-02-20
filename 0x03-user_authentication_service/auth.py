@@ -6,6 +6,7 @@ import logging
 from sqlalchemy.orm.exc import NoResultFound
 from db import DB
 from user import User
+from uuid import uuid4
 
 logging.disable(logging.WARNING)
 
@@ -23,6 +24,14 @@ def _hash_password(password: str) -> bytes:
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
     return hashed_password
+
+
+def _generate_uuid() -> str:
+    """
+    Generate a new UUID and return its string representation.
+    """
+    new_uuid = uuid.uuid4()
+    return str(new_uuid)
 
 
 class Auth:
