@@ -105,5 +105,22 @@ def get_reset_password_token() -> str:
         return jsonify({"message": "Internal Server Error"}), 500
 
 
+@app.route("/reset_password", methods=["PUT"], strict_slashes=False)
+def update_password() -> str:
+    """" PUT route to update the user's password."""
+    try:
+        email = request.form.get("email")
+        reset_token = request.form.get("reset_token")
+        new_password = request.form.get("new_password")
+
+        AUTH.update_password(reset_token, new_password)
+
+        return jsonify({"email": email, "message": "Password updated"}), 200
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 403
+    except Exception:
+        return jsonify({"message": "Internal Server Error"}), 500
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
