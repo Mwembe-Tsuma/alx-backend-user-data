@@ -18,6 +18,7 @@ def register_user(email: str, password: str) -> None:
     assert response.status_code == 201
     print("User registered successfully.")
 
+
 def log_in_wrong_password(email: str, password: str) -> None:
     """Wrong password"""
     response = requests.post(
@@ -26,6 +27,7 @@ def log_in_wrong_password(email: str, password: str) -> None:
     )
     assert response.status_code == 401
     print("Incorrect password handling successful.")
+
 
 def log_in(email: str, password: str) -> str:
     """Logged in user"""
@@ -37,11 +39,13 @@ def log_in(email: str, password: str) -> str:
     print("User logged in successfully.")
     return response.json()["session_id"]
 
+
 def profile_unlogged() -> None:
     """Unlogged profile"""
     response = requests.get(f"{BASE_URL}/profile")
     assert response.status_code == 403
     print("Unlogged profile access handling successful.")
+
 
 def profile_logged(session_id: str) -> None:
     """Logged profile"""
@@ -50,12 +54,14 @@ def profile_logged(session_id: str) -> None:
     assert response.status_code == 200
     print("Logged profile access handling successful.")
 
+
 def log_out(session_id: str) -> None:
     """Log out user"""
     headers = {"Cookie": f"session_id={session_id}"}
     response = requests.delete(f"{BASE_URL}/sessions", headers=headers)
     assert response.status_code == 200
     print("User logged out successfully.")
+
 
 def reset_password_token(email: str) -> str:
     """ password reset"""
@@ -67,15 +73,15 @@ def reset_password_token(email: str) -> str:
     print("Reset password token generated successfully.")
     return response.json()["reset_token"]
 
+
 def update_password(email: str, reset_token: str, new_password: str) -> None:
-    """Update password"""
     response = requests.put(
         f"{BASE_URL}/reset_password",
-        data = {
-        "email": email,
-        "reset_token": reset_token,
-        "new_password": new_password
-    }
+        data={
+            "email": email,
+            "reset_token": reset_token,
+            "new_password": new_password
+            }
     )
     assert response.status_code == 200
     print("Password updated successfully.")
